@@ -6,7 +6,7 @@
 /*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 16:13:56 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/12 10:16:38 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/02/12 10:58:54 by trbonnes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,56 +16,73 @@
 pthread_t		*g_philosophers;
 pthread_mutex_t	*g_fork;
 pthread_mutex_t	*g_philo_eating;
+int				g_death;
 
 void	*ft_philo_thread(void *params)
 {
-	t_philo	philosopher_x;
-	t_params *philo_data;
+	static t_philo	philosopher_x;
+	t_params 		*philo_data;
+	int				philo_next;
 
 	philosopher_x = (t_philo) { 0 };
 	philo_data = (t_params *)params;
-	printf("this is philosopher %d 's thread\n", philo_data->which_philo);
+	if (philo_data->which_philo == philo_data->philo_nb - 1)
+		philo_next = 0;
+	else
+		philo_next = philo_data->which_philo + 1;
 	gettimeofday(&philo_data->tv, &philo_data->tz);
 	philosopher_x.last_eating_ms = philo_data->tv.tv_sec * 1000;
-	//printf("%d\n", pthread_mutex_lock(&g_fork[philo_data->which_philo]));
-	if (pthread_mutex_lock(&g_fork[philo_data->which_philo]) == 0)
+	while (philosopher_x.is_dead != 1)
 	{
-		gettimeofday(&philo_data->tv, &philo_data->tz);
-		philosopher_x.actual_time_ms = philo_data->tv.tv_sec * 1000;
-		printf("%dms %d has taken a fork\n", philosopher_x.actual_time_ms, philo_data->which_philo);
-		if (pthread_mutex_lock(&g_fork[philo_data->which_philo + 1]) == 0)
+		if (pthread_mutex_lock(&g_fork[philo_data->which_philo]) == 0)
 		{
 			gettimeofday(&philo_data->tv, &philo_data->tz);
 			philosopher_x.actual_time_ms = philo_data->tv.tv_sec * 1000;
 			printf("%dms %d has taken a fork\n", philosopher_x.actual_time_ms, philo_data->which_philo);
-			philosopher_x.is_eating = 1;
+			if (pthread_mutex_lock(&g_fork[philo_next]) == 0)
+			{
+				gettimeofday(&philo_data->tv, &philo_data->tz);
+				philosopher_x.actual_time_ms = philo_data->tv.tv_sec * 1000;
+				printf("%dms %d has taken a fork\n", philosopher_x.actual_time_ms, philo_data->which_philo);
+				philosopher_x.is_eating = 1;
+			}
 		}
-	}
-	if (philosopher_x.is_eating == 1)
-	{
-		pthread_mutex_lock(&g_philo_eating[philo_data->which_philo]);
-		gettimeofday(&philo_data->tv, &philo_data->tz);
-		philosopher_x.last_eating_ms = philo_data->tv.tv_sec * 1000;
-		philosopher_x.actual_time_ms = philo_data->tv.tv_sec * 1000;
-		printf("%dms %d is eating\n", philosopher_x.actual_time_ms, philo_data->which_philo);
-		while (philosopher_x.last_eating_ms - philosopher_x.actual_time_ms < philo_data->time_to_eat)
+		if (philosopher_x.is_eating == 1)
 		{
+			pthread_mutex_lock(&g_philo_eating[philo_data->which_philo]);
 			gettimeofday(&philo_data->tv, &philo_data->tz);
 			philosopher_x.last_eating_ms = philo_data->tv.tv_sec * 1000;
+			philosopher_x.actual_time_ms = philo_data->tv.tv_sec * 1000;
+			printf("%dms %d is eating\n", philosopher_x.actual_time_ms, philo_data->which_philo);
+			while (philosopher_x.last_eating_ms - philosopher_x.actual_time_ms < philo_data->time_to_eat)
+			{
+				gettimeofday(&philo_data->tv, &philo_data->tz);
+				philosopher_x.last_eating_ms = philo_data->tv.tv_sec * 1000;
+			}
+			pthread_mutex_unlock(&g_fork[philo_data->which_philo]);
+			pthread_mutex_unlock(&g_fork[philo_next]);
+			pthread_mutex_unlock(&g_philo_eating[philo_data->which_philo]);
+			philosopher_x.is_eating = 0;
+			gettimeofday(&philo_data->tv, &philo_data->tz);
+			philosopher_x.last_eating_ms = philo_data->tv.tv_sec * 1000;
+			philosopher_x.actual_time_ms = philo_data->tv.tv_sec * 1000;
+			printf("%dms %d is sleeping\n", philosopher_x.actual_time_ms, philo_data->which_philo);
+			while (philosopher_x.actual_time_ms - philosopher_x.last_eating_ms < philo_data->time_to_sleep)
+			{
+				gettimeofday(&philo_data->tv, &philo_data->tz);
+				philosopher_x.actual_time_ms = philo_data->tv.tv_sec * 1000;
+			}
 		}
-		pthread_mutex_unlock(&g_fork[philo_data->which_philo]);
-		pthread_mutex_unlock(&g_fork[philo_data->which_philo + 1]);
-		pthread_mutex_unlock(&g_philo_eating[philo_data->which_philo]);
-		philosopher_x.is_eating = 0;
+		if (philosopher_x.is_eating == 0)
+		{
+			pthread_mutex_unlock(&g_fork[philo_data->which_philo]);
+			pthread_mutex_unlock(&g_fork[philo_next]);
+			gettimeofday(&philo_data->tv, &philo_data->tz);
+			philosopher_x.actual_time_ms = philo_data->tv.tv_sec * 1000;
+			printf("%dms %d is thiking\n", philosopher_x.actual_time_ms, philo_data->which_philo);
+		}
 	}
-	else
-	{
-		pthread_mutex_unlock(&g_fork[philo_data->which_philo]);
-		pthread_mutex_unlock(&g_fork[philo_data->which_philo + 1]);
-		gettimeofday(&philo_data->tv, &philo_data->tz);
-		philosopher_x.actual_time_ms = philo_data->tv.tv_sec * 1000;
-		printf("%dms %d is thiking\n", philosopher_x.actual_time_ms, philo_data->which_philo);
-	}
+	g_death = 1;
 	return NULL;
 }
 
@@ -76,6 +93,7 @@ int main(int ac, char **av)
 	
 	if (ac < 5 || ac > 6)
 		return(0);
+	g_death = 0;
 	params = malloc(sizeof(t_params));
 	params->philo_nb = ft_atoi(av[1]);
 	params->time_to_die = ft_atoi(av[2]);
@@ -94,11 +112,8 @@ int main(int ac, char **av)
 	if (!(g_philo_eating = malloc(sizeof(pthread_mutex_t) * params->philo_nb)))
 		return (-1);
 	i = -1;
-	while (++i > params->philo_nb)
-	{
+	while (++i < params->philo_nb)
 		pthread_mutex_init(&g_fork[i], NULL);
-		//g_fork[i] = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
-	}
 	i = 0;
 	while (i < params->philo_nb)
 	{
@@ -109,8 +124,10 @@ int main(int ac, char **av)
 			printf("error\n");
 			return (-1);
 		}
-		printf("philosopher %d created\n", i);
+		//printf("philosopher %d created\n", i);
 		i++;
 	}
+	while (g_death != 1)
+		;
 	return (0);
 }
