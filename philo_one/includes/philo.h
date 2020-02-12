@@ -6,7 +6,7 @@
 /*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 16:14:16 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/12 13:20:21 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/02/12 16:54:45 by trbonnes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct	s_params
 	
 	int				philo_nb;
 	int				which_philo;
+	int				philo_next;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
