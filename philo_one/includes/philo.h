@@ -6,7 +6,7 @@
 /*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 16:14:16 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/12 10:58:58 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/02/12 13:20:21 by trbonnes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ typedef struct	s_params
 }				t_params;
 
 
-int	ft_atoi(const char *nptr);
+int			ft_atoi(const char *nptr);
+void		ft_putendl_fd(char *s, int fd);
+void		ft_putnbr_fd(int nb, int fd);
+void		ft_putstr_fd(char *s, int fd);
 
 #endif 
