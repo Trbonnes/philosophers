@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -D_REENTRANT #-g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
 
 SRCS = ./srcs/main.c ./srcs/ft_atoi.c
 OBJS = ${SRCS:.c=.o}
