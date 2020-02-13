@@ -6,7 +6,7 @@
 /*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:16:22 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/13 13:24:30 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/02/13 16:38:20 by trbonnes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,31 +26,11 @@ unsigned long	get_curr_time_ms(void)
 	return (tv.tv_usec / 1000 + tv.tv_sec * 1000);
 }
 
-int		ft_philo_death(t_philo *philosopher_x, t_params *philo_data)
-{
-	if (get_curr_time_ms() - philosopher_x->last_eating_ms >= philo_data->time_to_die)
-	{
-		pthread_mutex_unlock(&g_fork[philo_data->which_philo]);
-		pthread_mutex_unlock(&g_fork[philo_data->philo_next]);
-		pthread_mutex_lock(&g_fd);
-		philosopher_x->actual_time_ms = get_curr_time_ms();
-		ft_putnbr_fd(philosopher_x->actual_time_ms, 1);
-		ft_putstr_fd("ms ", 1);
-		ft_putnbr_fd(philo_data->which_philo, 1);
-		ft_putendl_fd(" died", 1);
-		pthread_mutex_unlock(&g_fd);
-		return (-1);
-	}
-	return (0);
-}
-
-int		ft_philo_thinking(t_philo *philosopher_x, t_params *philo_data)
+int		ft_philo_thinking(t_params *philo_data)
 {
 	pthread_mutex_lock(&g_fd);
-	if (ft_philo_death(philosopher_x, philo_data) == -1)
-		return (-1);
-	philosopher_x->actual_time_ms = get_curr_time_ms();
-	ft_putnbr_fd(philosopher_x->actual_time_ms, 1);
+	philo_data->actual_time_ms = get_curr_time_ms() - philo_data->begin_time_ms;
+	ft_putnbr_fd(philo_data->actual_time_ms, 1);
 	ft_putstr_fd("ms ", 1);
 	ft_putnbr_fd(philo_data->which_philo, 1);
 	ft_putendl_fd(" is thinking", 1);
@@ -58,28 +38,20 @@ int		ft_philo_thinking(t_philo *philosopher_x, t_params *philo_data)
 	return (0);
 }
 
-int		ft_taking_fork(t_philo *philosopher_x, t_params *philo_data)
+int		ft_taking_fork(t_params *philo_data)
 {
 	pthread_mutex_lock(&g_fork[philo_data->which_philo]);
-	if (ft_philo_death(philosopher_x, philo_data) == -1)
-		return (-1);
 	pthread_mutex_lock(&g_fd);
-	if (ft_philo_death(philosopher_x, philo_data) == -1)
-		return (-1);
-	philosopher_x->actual_time_ms = get_curr_time_ms();
-	ft_putnbr_fd(philosopher_x->actual_time_ms, 1);
+	philo_data->actual_time_ms = get_curr_time_ms() - philo_data->begin_time_ms;
+	ft_putnbr_fd(philo_data->actual_time_ms, 1);
 	ft_putstr_fd("ms ", 1);
 	ft_putnbr_fd(philo_data->which_philo, 1);
 	ft_putendl_fd(" has taken a fork", 1);
 	pthread_mutex_unlock(&g_fd);
 	pthread_mutex_lock(&g_fork[philo_data->philo_next]);
-	if (ft_philo_death(philosopher_x, philo_data) == -1)
-		return (-1);
 	pthread_mutex_lock(&g_fd);
-	if (ft_philo_death(philosopher_x, philo_data) == -1)
-		return (-1);
-	philosopher_x->actual_time_ms = get_curr_time_ms();
-	ft_putnbr_fd(philosopher_x->actual_time_ms, 1);
+	philo_data->actual_time_ms = get_curr_time_ms() - philo_data->begin_time_ms;
+	ft_putnbr_fd(philo_data->actual_time_ms, 1);
 	ft_putstr_fd("ms ", 1);
 	ft_putnbr_fd(philo_data->which_philo, 1);
 	ft_putendl_fd(" has taken a fork", 1);
@@ -87,75 +59,48 @@ int		ft_taking_fork(t_philo *philosopher_x, t_params *philo_data)
 	return (0);
 }
 
-int		ft_eating(t_philo *philosopher_x, t_params *philo_data)
+int		ft_eating(t_params *philo_data)
 {
 	pthread_mutex_lock(&g_philo_eating[philo_data->which_philo]);
-	philosopher_x->actual_time_ms = get_curr_time_ms();
+	philo_data->last_eating_ms = get_curr_time_ms() - philo_data->begin_time_ms;
+	philo_data->actual_time_ms = philo_data->last_eating_ms;
 	pthread_mutex_lock(&g_fd);
-	ft_putnbr_fd(philosopher_x->actual_time_ms, 1);
+	ft_putnbr_fd(philo_data->actual_time_ms, 1);
 	ft_putstr_fd("ms ", 1);
 	ft_putnbr_fd(philo_data->which_philo, 1);
 	ft_putendl_fd(" is eating", 1);
 	pthread_mutex_unlock(&g_fd);
-	while (philosopher_x->last_eating_ms - philosopher_x->actual_time_ms < philo_data->time_to_eat)
-		philosopher_x->last_eating_ms = get_curr_time_ms();
+	usleep(philo_data->time_to_eat * 1000);
 	pthread_mutex_unlock(&g_fork[philo_data->which_philo]);
 	pthread_mutex_unlock(&g_fork[philo_data->philo_next]);
 	pthread_mutex_unlock(&g_philo_eating[philo_data->which_philo]);
-	philosopher_x->last_eating_ms = get_curr_time_ms();
-	philosopher_x->actual_time_ms = philosopher_x->last_eating_ms;
 	return (0);
 }
 
-int		ft_sleeping(t_philo *philosopher_x, t_params *philo_data)
+int		ft_sleeping(t_params *philo_data)
 {
 	pthread_mutex_lock(&g_fd);
-	if (ft_philo_death(philosopher_x, philo_data) == -1)
-		return (-1);
-	ft_putnbr_fd(philosopher_x->actual_time_ms, 1);
+	ft_putnbr_fd(philo_data->actual_time_ms, 1);
 	ft_putstr_fd("ms ", 1);
 	ft_putnbr_fd(philo_data->which_philo, 1);
 	ft_putendl_fd(" is sleeping", 1);
 	pthread_mutex_unlock(&g_fd);
-	while (philosopher_x->actual_time_ms - philosopher_x->last_eating_ms < philo_data->time_to_sleep)
-	{
-		if (ft_philo_death(philosopher_x, philo_data) == -1)
-			return (-1);
-		philosopher_x->actual_time_ms = get_curr_time_ms();
-	}
+	usleep(philo_data->time_to_sleep * 1000);
 	return (0);
 }
 
 void	*ft_philo_thread(void *params)
 {
-	t_philo	philosopher_x;
 	t_params *philo_data;
 
-	philosopher_x = (t_philo) { 0 };
 	philo_data = (t_params *)params;
-	philosopher_x.last_eating_ms = get_curr_time_ms();
+	philo_data->last_eating_ms = get_curr_time_ms() - philo_data->begin_time_ms;
 	while (g_death != 1)
 	{
-		if (ft_philo_thinking(&philosopher_x, philo_data) == -1)
-		{
-			g_death = 1;
-			break;
-		}
-		if (ft_taking_fork(&philosopher_x, philo_data) == -1)
-		{
-			g_death = 1;
-			break;
-		}
-		if (ft_eating(&philosopher_x, philo_data) == -1)
-		{
-			g_death = 1;
-			break;
-		}
-		if (ft_sleeping(&philosopher_x, philo_data) == -1)
-		{
-			g_death = 1;
-			break;
-		}
+		ft_philo_thinking(philo_data);
+		ft_taking_fork(philo_data);
+		ft_eating(philo_data);
+		ft_sleeping(philo_data);
 	}
 	return NULL;
 }
@@ -197,7 +142,8 @@ int main (int ac, char **av)
 		return(0);
 	g_death = 0;
 	philo_nb = ft_atoi(av[1]);
-	params = malloc(sizeof(t_params) * philo_nb);
+	if (!(params = malloc(sizeof(t_params) * philo_nb)))
+		return (-1);
 	params_init(params, philo_nb, ac, av);
 	if (!(g_philosophers = malloc(sizeof(pthread_t) * philo_nb)))
 		return (-1);
@@ -217,8 +163,7 @@ int main (int ac, char **av)
 		usleep(10);
 		i++;
 	}
-	while (g_death != 1)
-		;
+	ft_monitor_create(params, philo_nb);
 	free(params);
 	free(g_philosophers);
 	free(g_fork);
