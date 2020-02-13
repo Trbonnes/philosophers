@@ -6,7 +6,7 @@
 /*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 16:14:16 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/12 16:54:45 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/02/13 13:14:44 by trbonnes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,36 +20,30 @@
 # include <string.h>
 # include <stdio.h>
 
-typedef struct	s_philo
+typedef struct		s_philo
 {
-	int	actual_time_ms;
-	int	last_eating_ms;
-	int	is_thinking;
-	int	is_eating;
-	int	is_sleeping;
-	int	is_dead;
-}				t_philo;
+	unsigned long	actual_time_ms;
+	unsigned long	last_eating_ms;
+}					t_philo;
 
 
-typedef struct	s_params
+typedef struct		s_params
 {
 	
-	int				philo_nb;
-	int				which_philo;
-	int				philo_next;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				number_of_time;
-	int				begin_time_ms;
-	struct timeval	tv;
-	struct timezone	tz;
-}				t_params;
+	unsigned long	philo_nb;
+	unsigned long	which_philo;
+	unsigned long	philo_next;
+	unsigned long	time_to_die;
+	unsigned long	time_to_eat;
+	unsigned long	time_to_sleep;
+	unsigned long	number_of_time;
+	unsigned long	begin_time_ms;
+}					t_params;
 
 
-int			ft_atoi(const char *nptr);
-void		ft_putendl_fd(char *s, int fd);
-void		ft_putnbr_fd(int nb, int fd);
-void		ft_putstr_fd(char *s, int fd);
+unsigned long		ft_atoi(const char *nptr);
+void				ft_putendl_fd(char *s, int fd);
+void				ft_putnbr_fd(int nb, int fd);
+void				ft_putstr_fd(char *s, int fd);
 
 #endif 

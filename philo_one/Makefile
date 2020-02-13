@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 
-SRCS = ./srcs/main.c ./srcs/ft_atoi.c ./srcs/ft_putendl_fd.c ./srcs/ft_putnbr_fd.c ./srcs/ft_putstr_fd.c
+SRCS = ./srcs/philo.c ./srcs/ft_atoi.c ./srcs/ft_putendl_fd.c ./srcs/ft_putnbr_fd.c ./srcs/ft_putstr_fd.c
 OBJS = ${SRCS:.c=.o}
 
 NAME =	philo_one

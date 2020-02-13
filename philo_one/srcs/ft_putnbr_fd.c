@@ -6,7 +6,7 @@
 /*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 15:35:55 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/12 13:15:49 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/02/13 12:06:01 by trbonnes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,8 @@ static void	ft_putchar_fd(char c, int fd)
 	write(fd, &c, 1);
 }
 
-void		ft_putnbr_fd(int nb, int fd)
+void		ft_putnbr_fd(unsigned long nb, int fd)
 {
-	if (nb == -2147483648)
-	{
-		ft_putchar_fd('-', fd);
-		ft_putchar_fd('2', fd);
-		nb = 147483648;
-	}
-	if (nb < 0)
-	{
-		ft_putchar_fd('-', fd);
-		nb = -nb;
-	}
 	if (nb < 10)
 		ft_putchar_fd(nb + '0', fd);
 	else
