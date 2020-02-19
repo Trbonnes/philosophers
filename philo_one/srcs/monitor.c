@@ -6,7 +6,7 @@
 /*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 14:33:25 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/19 16:58:45 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/02/19 17:08:39 by trbonnes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,20 @@ int		ft_monitor_create(t_params *params, unsigned long philo_nb)
 	while (params->death[0] != 1)
 		;
 	free(monitor);
+	return (0);
+}
+
+int		mutex_init(unsigned long philo_nb, t_mutex mutexes)
+{
+	unsigned	i;
+
+	i = -1;
+	while (++i < philo_nb)
+	{
+		pthread_mutex_init(&(mutexes.fork[i]), NULL);
+		pthread_mutex_init(&(mutexes.philo_eating[i]), NULL);
+	}
+	pthread_mutex_init(&(mutexes.fd[0]), NULL);
 	return (0);
 }
 

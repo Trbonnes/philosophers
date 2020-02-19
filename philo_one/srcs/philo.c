@@ -6,7 +6,7 @@
 /*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:16:22 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/19 16:59:32 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/02/19 17:08:28 by trbonnes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,17 +67,16 @@ int ac, char **av, int *death)
 	}
 }
 
-int				mutex_init(unsigned long philo_nb, t_mutex mutexes)
+int				launch_free_return(unsigned long philo_nb,
+pthread_t *philosophers, t_mutex mutexes, t_params *params)
 {
-	unsigned	i;
-
-	i = -1;
-	while (++i < philo_nb)
-	{
-		pthread_mutex_init(&(mutexes.fork[i]), NULL);
-		pthread_mutex_init(&(mutexes.philo_eating[i]), NULL);
-	}
-	pthread_mutex_init(&(mutexes.fd[0]), NULL);
+	if (thread_launch(philo_nb, philosophers, params) == -1)
+		return (-1);
+	free(params);
+	free(philosophers);
+	free(mutexes.fork);
+	free(mutexes.philo_eating);
+	free(mutexes.fd);
 	return (0);
 }
 
@@ -106,12 +105,5 @@ int				main(int ac, char **av)
 	mutex_init(philo_nb, mutexes);
 	params_init_values(params, ac, av, death);
 	params_init_mutex(params, mutexes.fork, mutexes.fd, mutexes.philo_eating);
-	if (thread_launch(philo_nb, philosophers, params) == -1)
-		return (-1);
-	free(params);
-	free(philosophers);
-	free(mutexes.fork);
-	free(mutexes.philo_eating);
-	free(mutexes.fd);
-	return (0);
+	return (launch_free_return(philo_nb, philosophers, mutexes, params));
 }

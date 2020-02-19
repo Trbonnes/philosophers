@@ -6,7 +6,7 @@
 /*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 16:14:16 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/19 16:58:19 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/02/19 17:09:10 by trbonnes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ typedef struct		s_mutex
 	pthread_mutex_t			*fd;
 	pthread_mutex_t			*philo_eating;
 }					t_mutex;
-
 
 typedef struct		s_params
 {
@@ -58,6 +57,8 @@ int					ft_takinfork(t_params *philo_data);
 int					ft_eating(t_params *philo_data);
 int					ft_sleeping(t_params *philo_data);
 void				*ft_philo_thread(void *params);
-int					thread_launch(unsigned long philo_nb, pthread_t *philosophers, t_params *params);
+int					mutex_init(unsigned long philo_nb, t_mutex mutexes);
+int					thread_launch(unsigned long philo_nb,
+pthread_t *philosophers, t_params *params);
 
 #endif
