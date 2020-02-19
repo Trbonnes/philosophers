@@ -6,16 +6,13 @@
 /*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:16:22 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/13 16:38:20 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/02/19 15:00:57 by trbonnes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
 pthread_t		*g_philosophers;
-pthread_mutex_t	*g_fork;
-pthread_mutex_t	g_fd;
-pthread_mutex_t	*g_philo_eating;
 int				g_death;
 
 unsigned long	get_curr_time_ms(void)
@@ -131,15 +128,17 @@ void	params_init(t_params *params, unsigned long philo_nb, int ac, char **av)
 		i++;
 	}
 }
-
-int main (int ac, char **av)
+int main(int ac, char **av)
 {
 	t_params				*params;
+	sem_t					fork;
+	sem_t					output;
+	sem_t					philo_eating;
 	unsigned				i;
 	unsigned long			philo_nb;
 
 	if (ac < 5 || ac > 6)
-		return(0);
+		return (0);
 	g_death = 0;
 	philo_nb = ft_atoi(av[1]);
 	if (!(params = malloc(sizeof(t_params) * philo_nb)))
@@ -147,14 +146,12 @@ int main (int ac, char **av)
 	params_init(params, philo_nb, ac, av);
 	if (!(g_philosophers = malloc(sizeof(pthread_t) * philo_nb)))
 		return (-1);
-	if (!(g_fork = malloc(sizeof(pthread_mutex_t) * philo_nb)))
+	if (sem_init(&fork, 0, philo_nb) == 1)
 		return (-1);
-	if (!(g_philo_eating = malloc(sizeof(pthread_mutex_t) * philo_nb)))
+	if (sem_init(&philo_eating, 0, philo_nb) == 1)
 		return (-1);
-	i = -1;
-	while (++i < philo_nb)
-		pthread_mutex_init(&g_fork[i], NULL);
-	pthread_mutex_init(&g_fd, NULL);
+	if (sem_init(&output, 0, 1) == 1)
+		return (-1);
 	i = 0;
 	while (i < philo_nb)
 	{
@@ -166,7 +163,5 @@ int main (int ac, char **av)
 	ft_monitor_create(params, philo_nb);
 	free(params);
 	free(g_philosophers);
-	free(g_fork);
-	free(g_philo_eating);
 	return (0);
 }
