@@ -6,7 +6,7 @@
 /*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 14:33:25 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/19 17:08:39 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/02/20 15:40:44 by trbonnes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ pthread_t *philosophers, t_params *params)
 		if (pthread_create(&philosophers[i], NULL,
 		ft_philo_thread, &params[i]) != 0)
 			return (-1);
-		usleep(10);
+		usleep(1000);
 		i++;
 	}
 	if (ft_monitor_create(params, philo_nb) == -1)

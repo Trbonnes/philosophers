@@ -6,7 +6,7 @@
 /*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 16:14:16 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/20 12:52:52 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/02/20 15:24:21 by trbonnes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ typedef struct		s_params
 	unsigned long	last_eating_ms;
 }					t_params;
 
-
 unsigned long		ft_atoi(const char *nptr);
 void				ft_putendl_fd(char *s, int fd);
 void				ft_putnbr_fd(int nb, int fd);
@@ -60,4 +59,4 @@ void				*ft_philo_thread(void *params);
 int					thread_launch(unsigned long philo_nb,
 pthread_t *philosophers, t_params *params);
 
-#endif 
+#endif

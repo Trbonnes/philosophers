@@ -6,7 +6,7 @@
 /*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 14:33:25 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/20 14:15:42 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/02/20 15:38:03 by trbonnes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ unsigned long	get_curr_time_ms(void)
 	return (tv.tv_usec / 1000 + tv.tv_sec * 1000);
 }
 
-int		ft_philo_death(t_params *philo_data)
+int				ft_philo_death(t_params *philo_data)
 {
 	sem_post(philo_data->fork);
 	sem_post(philo_data->fork);
@@ -33,7 +33,7 @@ int		ft_philo_death(t_params *philo_data)
 	return (1);
 }
 
-void	*ft_monitor_thread(void *params)
+void			*ft_monitor_thread(void *params)
 {
 	t_params		*philo_data;
 	unsigned long	time;
@@ -52,7 +52,7 @@ void	*ft_monitor_thread(void *params)
 	return (NULL);
 }
 
-int		ft_monitor_create(t_params *params, unsigned long philo_nb)
+int				ft_monitor_create(t_params *params, unsigned long philo_nb)
 {
 	unsigned long			i;
 	pthread_t				*monitor;
@@ -73,7 +73,7 @@ int		ft_monitor_create(t_params *params, unsigned long philo_nb)
 	return (0);
 }
 
-int		thread_launch(unsigned long philo_nb,
+int				thread_launch(unsigned long philo_nb,
 pthread_t *philosophers, t_params *params)
 {
 	unsigned	i;
@@ -84,7 +84,7 @@ pthread_t *philosophers, t_params *params)
 		if (pthread_create(&philosophers[i], NULL,
 		ft_philo_thread, &params[i]) != 0)
 			return (-1);
-		usleep(10);
+		usleep(1000);
 		i++;
 	}
 	if (ft_monitor_create(params, philo_nb) == -1)

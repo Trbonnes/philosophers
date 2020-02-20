@@ -6,7 +6,7 @@
 /*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:16:22 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/20 13:15:28 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/02/20 15:26:12 by trbonnes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ char		*philo_sem_name(unsigned i)
 	return (name);
 }
 
-int			launch_free_return(pthread_t *philosophers, t_params *params, sem_t **philo_eating)
+int			launch_free_return(pthread_t *philosophers,
+t_params *params, sem_t **philo_eating)
 {
 	if (thread_launch(params[0].philo_nb, philosophers, params) == -1)
 		return (-1);
@@ -33,7 +34,8 @@ int			launch_free_return(pthread_t *philosophers, t_params *params, sem_t **phil
 	return (0);
 }
 
-int			params_init_sem(t_params *params,  pthread_t *philosophers, t_semaph semaphores)
+int			params_init_sem(t_params *params,
+pthread_t *philosophers, t_semaph semaphores)
 {
 	sem_t			**philo_eating;
 	unsigned long	philo_nb;
@@ -49,13 +51,6 @@ int			params_init_sem(t_params *params,  pthread_t *philosophers, t_semaph semap
 		name = philo_sem_name(i);
 		sem_close(philo_eating[i]);
 		sem_unlink(name);
-		free(name);
-		i++;
-	}
-	i = 0;
-	while (i < philo_nb)
-	{
-		name = philo_sem_name(i);
 		philo_eating[i] = sem_open(name, O_CREAT, 0666, 1);
 		free(name);
 		params[i].fork = semaphores.fork;
