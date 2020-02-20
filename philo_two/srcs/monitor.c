@@ -6,7 +6,7 @@
 /*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 14:33:25 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/20 10:45:34 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/02/20 14:15:42 by trbonnes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ unsigned long	get_curr_time_ms(void)
 
 int		ft_philo_death(t_params *philo_data)
 {
-	sem_post(&(philo_data->fork[philo_data->which_philo]));
-	sem_post(&(philo_data->fork[philo_data->philo_next]));
+	sem_post(philo_data->fork);
+	sem_post(philo_data->fork);
 	sem_wait(philo_data->output);
 	philo_data->actual_time_ms = get_curr_time_ms() - philo_data->begin_time_ms;
 	ft_putnbr_fd(philo_data->actual_time_ms, 1);

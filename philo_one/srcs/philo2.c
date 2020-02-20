@@ -6,7 +6,7 @@
 /*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 15:57:37 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/19 16:57:52 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/02/20 14:32:11 by trbonnes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ int		ft_takinfork(t_params *philo_data)
 int		ft_eating(t_params *philo_data)
 {
 	pthread_mutex_lock(&(philo_data->philo_eating[philo_data->which_philo]));
+	pthread_mutex_lock(philo_data->fd);
 	philo_data->last_eating_ms = get_curr_time_ms() - philo_data->begin_time_ms;
 	philo_data->actual_time_ms = philo_data->last_eating_ms;
-	pthread_mutex_lock(philo_data->fd);
 	ft_putnbr_fd(philo_data->actual_time_ms, 1);
 	ft_putstr_fd("ms ", 1);
 	ft_putnbr_fd(philo_data->which_philo, 1);
@@ -65,6 +65,7 @@ int		ft_eating(t_params *philo_data)
 
 int		ft_sleeping(t_params *philo_data)
 {
+	philo_data->actual_time_ms = get_curr_time_ms() - philo_data->begin_time_ms;
 	pthread_mutex_lock(philo_data->fd);
 	ft_putnbr_fd(philo_data->actual_time_ms, 1);
 	ft_putstr_fd("ms ", 1);

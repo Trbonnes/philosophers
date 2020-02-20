@@ -6,7 +6,7 @@
 /*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 16:14:16 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/20 11:17:27 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/02/20 12:52:52 by trbonnes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <string.h>
 # include <stdio.h>
 # include <semaphore.h>
+# include <errno.h>
 
 typedef struct		s_semaph
 {

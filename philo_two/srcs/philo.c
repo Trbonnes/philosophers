@@ -6,7 +6,7 @@
 /*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:16:22 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/20 11:22:18 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/02/20 13:15:28 by trbonnes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,19 @@
 
 char		*philo_sem_name(unsigned i)
 {
+	char	*tmp;
 	char	*name;
 
-	name = ft_strjoin("philosopher_", ft_itoa(i));
+	tmp = ft_itoa(i);
+	name = ft_strjoin("philosophers_", tmp);
+	free(tmp);
 	return (name);
 }
 
-int			launch_free_return(t_semaph semaphores,
-pthread_t *philosophers, t_params *params, sem_t **philo_eating)
+int			launch_free_return(pthread_t *philosophers, t_params *params, sem_t **philo_eating)
 {
-	unsigned	i;
-
 	if (thread_launch(params[0].philo_nb, philosophers, params) == -1)
 		return (-1);
-	sem_post(semaphores.output);
-	sem_close(semaphores.fork);
-	sem_close(semaphores.output);
-	i = 0;
-	while (i < params[0].philo_nb)
-	{
-		sem_close(params[i].philo_eating);
-		i++;
-	}
 	free(params);
 	free(philosophers);
 	free(philo_eating);
@@ -47,7 +38,7 @@ int			params_init_sem(t_params *params,  pthread_t *philosophers, t_semaph semap
 	sem_t			**philo_eating;
 	unsigned long	philo_nb;
 	unsigned		i;
-	char *			name;
+	char			*name;
 
 	i = 0;
 	philo_nb = params[i].philo_nb;
@@ -56,14 +47,23 @@ int			params_init_sem(t_params *params,  pthread_t *philosophers, t_semaph semap
 	while (i < philo_nb)
 	{
 		name = philo_sem_name(i);
-		philo_eating[i] = sem_open(name, O_CREAT, O_RDWR, 1);
+		sem_close(philo_eating[i]);
+		sem_unlink(name);
+		free(name);
+		i++;
+	}
+	i = 0;
+	while (i < philo_nb)
+	{
+		name = philo_sem_name(i);
+		philo_eating[i] = sem_open(name, O_CREAT, 0666, 1);
 		free(name);
 		params[i].fork = semaphores.fork;
 		params[i].output = semaphores.output;
 		params[i].philo_eating = philo_eating[i];
 		i++;
 	}
-	return (launch_free_return(semaphores, philosophers, params, philo_eating));
+	return (launch_free_return(philosophers, params, philo_eating));
 }
 
 void		params_init_values(t_params *params,
@@ -108,12 +108,16 @@ int			main(int ac, char **av)
 		return (0);
 	*death = 0;
 	philo_nb = ft_atoi(av[1]);
+	sem_close(semaphores.fork);
+	sem_close(semaphores.output);
+	sem_unlink("philo_fork");
+	sem_unlink("philo_output");
 	if (!(params = malloc(sizeof(t_params) * philo_nb)))
 		return (-1);
 	if (!(philosophers = malloc(sizeof(pthread_t) * philo_nb)))
 		return (-1);
-	semaphores.fork = sem_open("fork", O_CREAT, O_RDWR, philo_nb);
-	semaphores.output = sem_open("output", O_CREAT, O_RDWR, 1);
+	semaphores.fork = sem_open("philo_fork", O_CREAT, 0666, philo_nb);
+	semaphores.output = sem_open("philo_output", O_CREAT, 0666, 1);
 	params_init_values(params, ac, av, death);
 	return (params_init_sem(params, philosophers, semaphores));
 }
