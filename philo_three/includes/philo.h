@@ -6,7 +6,7 @@
 /*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 16:14:16 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/20 15:42:45 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/02/21 17:03:58 by trbonnes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <stdlib.h>
 # include <pthread.h>
 # include <fcntl.h>
+# include <signal.h>
+# include <sys/types.h>
 # include <sys/stat.h>
 # include <sys/time.h>
 # include <unistd.h>
@@ -32,6 +34,7 @@ typedef struct		s_semaph
 
 typedef struct		s_params
 {
+	pid_t			pid;
 	int				*death;
 	sem_t			*fork;
 	sem_t			*output;
