@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 14:33:25 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/07/06 22:23:18 by user42           ###   ########.fr       */
+/*   Updated: 2020/07/06 22:36:16 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	*ft_monitor_thread(void *params)
 		if (philo_data->death[0] != 1)
 			pthread_mutex_unlock(
 			&(philo_data->philo_eating[philo_data->which_philo]));
-		//usleep(1000);
+		usleep(1000);
 	}
 	return (NULL);
 }

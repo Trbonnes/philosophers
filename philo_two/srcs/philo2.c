@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 09:59:20 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/07/06 18:00:23 by user42           ###   ########.fr       */
+/*   Updated: 2020/07/06 22:39:57 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int		ft_philo_thinking(t_params *philo_data)
 {
-	sem_wait(philo_data->output);
 	philo_data->actual_time_ms = get_curr_time_ms() - philo_data->begin_time_ms;
+	sem_wait(philo_data->output);
 	ft_putnbr_fd(philo_data->actual_time_ms, 1);
 	ft_putstr_fd("ms ", 1);
 	ft_putnbr_fd(philo_data->which_philo, 1);
@@ -27,16 +27,16 @@ int		ft_philo_thinking(t_params *philo_data)
 int		ft_takinfork(t_params *philo_data)
 {
 	sem_wait(philo_data->fork);
-	sem_wait(philo_data->output);
 	philo_data->actual_time_ms = get_curr_time_ms() - philo_data->begin_time_ms;
+	sem_wait(philo_data->output);
 	ft_putnbr_fd(philo_data->actual_time_ms, 1);
 	ft_putstr_fd("ms ", 1);
 	ft_putnbr_fd(philo_data->which_philo, 1);
 	ft_putendl_fd(" has taken a fork", 1);
 	sem_post(philo_data->output);
 	sem_wait(philo_data->fork);
-	sem_wait(philo_data->output);
 	philo_data->actual_time_ms = get_curr_time_ms() - philo_data->begin_time_ms;
+	sem_wait(philo_data->output);
 	ft_putnbr_fd(philo_data->actual_time_ms, 1);
 	ft_putstr_fd("ms ", 1);
 	ft_putnbr_fd(philo_data->which_philo, 1);
@@ -48,8 +48,8 @@ int		ft_takinfork(t_params *philo_data)
 int		ft_eating(t_params *philo_data)
 {
 	sem_wait(philo_data->philo_eating);
-	sem_wait(philo_data->output);
 	philo_data->last_eating_ms = get_curr_time_ms() - philo_data->begin_time_ms;
+	sem_wait(philo_data->output);
 	philo_data->actual_time_ms = philo_data->last_eating_ms;
 	ft_putnbr_fd(philo_data->actual_time_ms, 1);
 	ft_putstr_fd("ms ", 1);
@@ -66,8 +66,8 @@ int		ft_eating(t_params *philo_data)
 
 int		ft_sleeping(t_params *philo_data)
 {
-	sem_wait(philo_data->output);
 	philo_data->actual_time_ms = get_curr_time_ms() - philo_data->begin_time_ms;
+	sem_wait(philo_data->output);
 	ft_putnbr_fd(philo_data->actual_time_ms, 1);
 	ft_putstr_fd("ms ", 1);
 	ft_putnbr_fd(philo_data->which_philo, 1);
