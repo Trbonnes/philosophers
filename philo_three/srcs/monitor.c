@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 16:40:56 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/07/06 18:18:55 by user42           ###   ########.fr       */
+/*   Updated: 2020/07/06 18:30:26 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ pthread_t *philosophers, t_params *params)
 			while (1)
 				;
 		}
-		usleep(1000);
+		usleep(2 * 1000);
 		i++;
 	}
 	wait_children(params);

@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 14:33:25 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/07/06 17:09:09 by user42           ###   ########.fr       */
+/*   Updated: 2020/07/06 18:28:55 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ pthread_t *philosophers, t_params *params)
 		if (pthread_create(&philosophers[i], NULL,
 		ft_philo_thread, &params[i]) != 0)
 			return (-1);
-		usleep(1000);
+		usleep(2 * 1000);
 		i++;
 	}
 	if (ft_monitor_create(params, philo_nb) == -1)
