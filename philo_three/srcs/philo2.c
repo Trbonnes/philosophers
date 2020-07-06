@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 16:44:38 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/21 16:52:03 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/07/06 18:09:53 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int		ft_eating(t_params *philo_data)
 	ft_putendl_fd(" is eating", 1);
 	sem_post(philo_data->output);
 	usleep(philo_data->time_to_eat * 1000);
+	philo_data->actual_number_of_time += 1;
 	sem_post(philo_data->fork);
 	sem_post(philo_data->fork);
 	sem_post(philo_data->philo_eating);
@@ -82,7 +83,8 @@ void	*ft_philo_thread(void *params)
 
 	philo_data = (t_params *)params;
 	philo_data->last_eating_ms = get_curr_time_ms() - philo_data->begin_time_ms;
-	while (philo_data->death[0] != 1)
+	while (philo_data->death[0] != 1
+	&& philo_data->actual_number_of_time != philo_data->number_of_time)
 	{
 		ft_philo_thinking(philo_data);
 		ft_takinfork(philo_data);

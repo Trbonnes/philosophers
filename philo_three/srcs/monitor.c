@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 16:40:56 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/21 17:06:28 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/07/06 18:15:54 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ void			*ft_monitor_thread(void *params)
 	unsigned long	time;
 
 	philo_data = (t_params *)params;
-	while (philo_data->death[0] != 1)
+	while (philo_data->death[0] != 1
+	&& philo_data->actual_number_of_time != philo_data->number_of_time)
 	{
 		sem_wait(philo_data->philo_eating);
 		time = get_curr_time_ms() - philo_data->begin_time_ms;

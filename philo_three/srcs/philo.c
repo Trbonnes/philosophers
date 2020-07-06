@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 15:43:26 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/21 17:06:18 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/07/06 18:08:31 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,10 @@ int ac, char **av, int *death)
 		params[i].time_to_die = ft_atoi(av[2]);
 		params[i].time_to_eat = ft_atoi(av[3]);
 		params[i].time_to_sleep = ft_atoi(av[4]);
+		params[i].number_of_time = -1;
 		if (ac == 6)
 			params[i].number_of_time = ft_atoi(av[5]);
-		else
-			params[i].number_of_time = 0;
+		params[i].actual_number_of_time = 0;
 		params[i].begin_time_ms = time;
 		params[i].death = death;
 	}
@@ -99,8 +99,8 @@ int			main(int ac, char **av)
 	int						death[1];
 	unsigned long			philo_nb;
 
-	if (ac < 5 || ac > 6)
-		return (0);
+	if ((ac < 5 || ac > 6) || (ac == 6 && ft_atoi(av[5]) <= 0))
+		return (-1);
 	*death = 0;
 	philo_nb = ft_atoi(av[1]);
 	sem_close(semaphores.fork);
