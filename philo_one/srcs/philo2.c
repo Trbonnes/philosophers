@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 15:57:37 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/07/06 17:09:31 by user42           ###   ########.fr       */
+/*   Updated: 2020/07/06 22:22:48 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int		ft_philo_thinking(t_params *philo_data)
 {
-	pthread_mutex_lock(philo_data->fd);
 	philo_data->actual_time_ms = get_curr_time_ms() - philo_data->begin_time_ms;
+	pthread_mutex_lock(philo_data->fd);
 	ft_putnbr_fd(philo_data->actual_time_ms, 1);
 	ft_putstr_fd("ms ", 1);
 	ft_putnbr_fd(philo_data->which_philo, 1);
@@ -27,16 +27,16 @@ int		ft_philo_thinking(t_params *philo_data)
 int		ft_takinfork(t_params *philo_data)
 {
 	pthread_mutex_lock(&(philo_data->fork[philo_data->which_philo]));
-	pthread_mutex_lock(philo_data->fd);
 	philo_data->actual_time_ms = get_curr_time_ms() - philo_data->begin_time_ms;
+	pthread_mutex_lock(philo_data->fd);
 	ft_putnbr_fd(philo_data->actual_time_ms, 1);
 	ft_putstr_fd("ms ", 1);
 	ft_putnbr_fd(philo_data->which_philo, 1);
 	ft_putendl_fd(" has taken a fork", 1);
 	pthread_mutex_unlock(philo_data->fd);
 	pthread_mutex_lock(&(philo_data->fork[philo_data->philo_next]));
-	pthread_mutex_lock(philo_data->fd);
 	philo_data->actual_time_ms = get_curr_time_ms() - philo_data->begin_time_ms;
+	pthread_mutex_lock(philo_data->fd);
 	ft_putnbr_fd(philo_data->actual_time_ms, 1);
 	ft_putstr_fd("ms ", 1);
 	ft_putnbr_fd(philo_data->which_philo, 1);
@@ -48,8 +48,8 @@ int		ft_takinfork(t_params *philo_data)
 int		ft_eating(t_params *philo_data)
 {
 	pthread_mutex_lock(&(philo_data->philo_eating[philo_data->which_philo]));
-	pthread_mutex_lock(philo_data->fd);
 	philo_data->last_eating_ms = get_curr_time_ms() - philo_data->begin_time_ms;
+	pthread_mutex_lock(philo_data->fd);
 	philo_data->actual_time_ms = philo_data->last_eating_ms;
 	ft_putnbr_fd(philo_data->actual_time_ms, 1);
 	ft_putstr_fd("ms ", 1);

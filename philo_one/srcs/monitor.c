@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 14:33:25 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/07/06 18:28:55 by user42           ###   ########.fr       */
+/*   Updated: 2020/07/06 22:23:18 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ int		ft_philo_death(t_params *philo_data)
 {
 	pthread_mutex_unlock(&(philo_data->fork[philo_data->which_philo]));
 	pthread_mutex_unlock(&(philo_data->fork[philo_data->philo_next]));
-	pthread_mutex_lock(philo_data->fd);
 	philo_data->actual_time_ms = get_curr_time_ms() - philo_data->begin_time_ms;
+	pthread_mutex_lock(philo_data->fd);
 	ft_putnbr_fd(philo_data->actual_time_ms, 1);
 	ft_putstr_fd("ms ", 1);
 	ft_putnbr_fd(philo_data->which_philo, 1);
@@ -42,7 +42,7 @@ void	*ft_monitor_thread(void *params)
 		if (philo_data->death[0] != 1)
 			pthread_mutex_unlock(
 			&(philo_data->philo_eating[philo_data->which_philo]));
-		usleep(8 * 1000);
+		//usleep(1000);
 	}
 	return (NULL);
 }
@@ -95,7 +95,7 @@ pthread_t *philosophers, t_params *params)
 		if (pthread_create(&philosophers[i], NULL,
 		ft_philo_thread, &params[i]) != 0)
 			return (-1);
-		usleep(2 * 1000);
+		usleep(1000);
 		i++;
 	}
 	if (ft_monitor_create(params, philo_nb) == -1)
