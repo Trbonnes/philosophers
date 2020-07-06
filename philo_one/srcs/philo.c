@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:16:22 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/07/06 16:27:38 by user42           ###   ########.fr       */
+/*   Updated: 2020/07/06 17:13:04 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,9 @@ int ac, char **av, int *death)
 		params[i].time_to_die = ft_atoi(av[2]);
 		params[i].time_to_eat = ft_atoi(av[3]);
 		params[i].time_to_sleep = ft_atoi(av[4]);
+		params[i].number_of_time = -1;
 		if (ac == 6)
 			params[i].number_of_time = ft_atoi(av[5]);
-		else
-			params[i].number_of_time = -1;
 		params[i].actual_number_of_time = 0;
 		params[i].begin_time_ms = time;
 		params[i].death = death;
@@ -89,10 +88,8 @@ int				main(int ac, char **av)
 	t_params				*params;
 	unsigned long			philo_nb;
 
-	if (ac < 5 || ac > 6)
+	if ((ac < 5 || ac > 6) || (ac == 6 && ft_atoi(av[5]) <= 0))
 		return (-1);
-	if (ac == 6 && ft_atoi(av[5]) <= 0)
-		return (0);
 	*death = 0;
 	philo_nb = ft_atoi(av[1]);
 	if (!(params = malloc(sizeof(t_params) * philo_nb)))
