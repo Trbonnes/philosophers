@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 16:40:56 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/07/06 18:15:54 by user42           ###   ########.fr       */
+/*   Updated: 2020/07/06 18:18:55 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void			*ft_monitor_thread(void *params)
 			sem_post(philo_data->philo_eating);
 		usleep(8 * 1000);
 	}
+	exit(0);
 	return (NULL);
 }
 
