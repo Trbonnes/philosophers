@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 14:33:25 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/20 15:40:44 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/07/06 16:21:41 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	*ft_monitor_thread(void *params)
 	unsigned long	time;
 
 	philo_data = (t_params *)params;
-	while (philo_data->death[0] != 1)
+	while (philo_data->death[0] != 1 && philo_data->actual_number_of_time != philo_data->number_of_time)
 	{
 		pthread_mutex_lock(
 		&(philo_data->philo_eating[philo_data->which_philo]));
@@ -61,8 +61,12 @@ int		ft_monitor_create(t_params *params, unsigned long philo_nb)
 			return (-1);
 		i++;
 	}
-	while (params->death[0] != 1)
-		;
+	i = 0;
+	while (i < philo_nb && params->death[0] != 1)
+	{
+		if (params[i].actual_number_of_time == params[i].number_of_time)
+			i++;
+	}
 	free(monitor);
 	return (0);
 }

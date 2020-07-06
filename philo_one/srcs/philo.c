@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:16:22 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/19 17:08:28 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/07/06 16:27:38 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ int ac, char **av, int *death)
 		if (ac == 6)
 			params[i].number_of_time = ft_atoi(av[5]);
 		else
-			params[i].number_of_time = 0;
+			params[i].number_of_time = -1;
+		params[i].actual_number_of_time = 0;
 		params[i].begin_time_ms = time;
 		params[i].death = death;
 	}
@@ -90,6 +91,8 @@ int				main(int ac, char **av)
 
 	if (ac < 5 || ac > 6)
 		return (-1);
+	if (ac == 6 && ft_atoi(av[5]) <= 0)
+		return (0);
 	*death = 0;
 	philo_nb = ft_atoi(av[1]);
 	if (!(params = malloc(sizeof(t_params) * philo_nb)))
