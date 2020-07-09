@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 14:33:25 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/07/06 22:39:10 by user42           ###   ########.fr       */
+/*   Updated: 2020/07/09 16:51:52 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void			*ft_monitor_thread(void *params)
 	while (philo_data->death[0] != 1
 	&& philo_data->actual_number_of_time != philo_data->number_of_time)
 	{
-		sem_wait(philo_data->philo_eating);
 		time = get_curr_time_ms() - philo_data->begin_time_ms;
+		sem_wait(philo_data->philo_eating);
 		if (time - philo_data->last_eating_ms > philo_data->time_to_die)
 			philo_data->death[0] = ft_philo_death(philo_data);
 		if (philo_data->death[0] != 1)
@@ -53,19 +53,24 @@ void			*ft_monitor_thread(void *params)
 	return (NULL);
 }
 
-int				ft_monitor_create(t_params *params, unsigned long philo_nb)
+int				thread_launch(unsigned long philo_nb,
+pthread_t *philosophers, t_params *params)
 {
-	unsigned long			i;
-	pthread_t				*monitor;
+	unsigned	i;
+	pthread_t	*monitor;
 
 	if (!(monitor = malloc(sizeof(t_params) * philo_nb)))
 		return (-1);
 	i = 0;
 	while (i < philo_nb)
 	{
+		if (pthread_create(&philosophers[i], NULL,
+		ft_philo_thread, &params[i]) != 0)
+			return (-1);
 		if (pthread_create(&monitor[i], NULL,
 		ft_monitor_thread, &params[i]) != 0)
 			return (-1);
+		usleep(1000);
 		i++;
 	}
 	i = 0;
@@ -73,24 +78,5 @@ int				ft_monitor_create(t_params *params, unsigned long philo_nb)
 		if (params[i].actual_number_of_time == params[i].number_of_time)
 			i++;
 	free(monitor);
-	return (0);
-}
-
-int				thread_launch(unsigned long philo_nb,
-pthread_t *philosophers, t_params *params)
-{
-	unsigned	i;
-
-	i = 0;
-	while (i < philo_nb)
-	{
-		if (pthread_create(&philosophers[i], NULL,
-		ft_philo_thread, &params[i]) != 0)
-			return (-1);
-		usleep(1000);
-		i++;
-	}
-	if (ft_monitor_create(params, philo_nb) == -1)
-		return (-1);
 	return (0);
 }

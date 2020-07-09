@@ -3,25 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 15:21:00 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/02/12 13:20:00 by trbonnes         ###   ########.fr       */
+/*   Updated: 2020/07/09 15:56:21 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 
-static void	ft_putchar_fd(char c, int fd)
+static	int	ft_strlen(char *str)
 {
-	write(fd, &c, 1);
+	int i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }
 
 void		ft_putstr_fd(char *s, int fd)
 {
-	while (*s)
-	{
-		ft_putchar_fd(*s, fd);
-		s++;
-	}
+	write(fd, s, ft_strlen(s));
 }
