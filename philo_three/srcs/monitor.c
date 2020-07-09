@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 16:40:56 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/07/06 22:38:20 by user42           ###   ########.fr       */
+/*   Updated: 2020/07/09 16:57:40 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ void			*ft_monitor_thread(void *params)
 	while (philo_data->death[0] != 1
 	&& philo_data->actual_number_of_time != philo_data->number_of_time)
 	{
-		sem_wait(philo_data->philo_eating);
 		time = get_curr_time_ms() - philo_data->begin_time_ms;
+		sem_wait(philo_data->philo_eating);
 		if (time - philo_data->last_eating_ms > philo_data->time_to_die)
 			philo_data->death[0] = ft_philo_death(philo_data);
 		if (philo_data->death[0] != 1)

@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 16:14:16 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/07/06 18:07:33 by user42           ###   ########.fr       */
+/*   Updated: 2020/07/09 17:01:40 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <sys/time.h>
+# include <sys/wait.h>
 # include <unistd.h>
 # include <string.h>
 # include <stdio.h>
