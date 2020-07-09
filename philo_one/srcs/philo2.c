@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 15:57:37 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/07/06 22:22:48 by user42           ###   ########.fr       */
+/*   Updated: 2020/07/09 16:17:18 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ void	*ft_philo_thread(void *params)
 	t_params *philo_data;
 
 	philo_data = (t_params *)params;
-	philo_data->last_eating_ms = get_curr_time_ms() - philo_data->begin_time_ms;
 	while (philo_data->death[0] != 1
 	&& philo_data->actual_number_of_time != philo_data->number_of_time)
 	{

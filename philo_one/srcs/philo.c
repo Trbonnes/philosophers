@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:16:22 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/07/06 17:13:04 by user42           ###   ########.fr       */
+/*   Updated: 2020/07/09 16:21:08 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,9 @@ int ac, char **av, int *death)
 {
 	unsigned long	philo_nb;
 	unsigned		i;
-	unsigned long	time;
 
 	i = -1;
 	philo_nb = ft_atoi(av[1]);
-	time = get_curr_time_ms();
 	while (++i < philo_nb)
 	{
 		params[i].philo_nb = philo_nb;
@@ -62,7 +60,8 @@ int ac, char **av, int *death)
 		if (ac == 6)
 			params[i].number_of_time = ft_atoi(av[5]);
 		params[i].actual_number_of_time = 0;
-		params[i].begin_time_ms = time;
+		params[i].begin_time_ms = get_curr_time_ms();
+		params[i].last_eating_ms = 0;
 		params[i].death = death;
 	}
 }
