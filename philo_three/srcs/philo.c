@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: trbonnes <trbonnes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 15:43:26 by trbonnes          #+#    #+#             */
-/*   Updated: 2020/07/09 16:56:17 by user42           ###   ########.fr       */
+/*   Updated: 2020/07/14 10:29:59 by trbonnes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ int			main(int ac, char **av)
 		return (-1);
 	*death = 0;
 	philo_nb = ft_atoi(av[1]);
-	//sem_close(semaphores.fork);
-	//sem_close(semaphores.output);
+	sem_close(semaphores.fork);
+	sem_close(semaphores.output);
 	sem_unlink("philo_fork");
 	sem_unlink("philo_output");
 	if (!(params = malloc(sizeof(t_params) * philo_nb)))
