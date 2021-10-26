@@ -7,7 +7,7 @@ learn how to make threads. You will discover the mutex. "
 
 ---
 
-Trbonnes Cub3D
+Trbonnes philosophers
 ===============
 
 ### Overview
